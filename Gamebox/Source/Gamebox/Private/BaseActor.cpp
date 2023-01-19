@@ -4,6 +4,7 @@
 #include "BaseActor.h"
 #include "Engine/Engine.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "TimerManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseActor, All, All)
 
@@ -27,6 +28,8 @@ void ABaseActor::BeginPlay()
 	InitialLocation = GetActorLocation(); //получаем доступ к локации
 
 	SetColor(GeometryData.Color);
+
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &ABaseActor::OnTimerFired, GeometryData.TimerRate, true);
 
 	//PrintTransform();
 	//PrintStringType();
@@ -114,5 +117,20 @@ void ABaseActor::SetColor(const FLinearColor& Color)
 	{
 		DynMaterial->SetVectorParameterValue("Color", Color);
 	}
+}
+
+void ABaseActor::OnTimerFired()
+{
+	if (++TimerCount <= MaxTimerCount)
+	{
+		FLinearColor NewColor = FLinearColor::MakeRandomColor();
+		UE_LOG(LogBaseActor, Warning, TEXT("Timer Count: %i, Color: %s"), TimerCount, *NewColor.ToString());
+		SetColor(NewColor);
+	}
+	else
+	{
+		UE_LOG(LogBaseActor, Warning, TEXT("Timer has been stopped!"));
+		GetWorldTimerManager().ClearTimer(TimerHandle);
+	}	
 }
 

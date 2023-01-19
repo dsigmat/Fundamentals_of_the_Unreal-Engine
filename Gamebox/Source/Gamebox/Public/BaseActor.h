@@ -31,6 +31,12 @@ struct FGeometryData
 
 	UPROPERTY(EditAnywhere, Category = "Design")
 		FLinearColor Color = FLinearColor::Yellow;
+
+	UPROPERTY(EditAnywhere, Category = "Design")
+		float TimerRate = 3.0f;
+
+
+
 };
 
 UCLASS()
@@ -70,6 +76,10 @@ public:
 private:
 
 	FVector InitialLocation; //кешируем первоночальное значение актора
+	FTimerHandle TimerHandle;//— помощью данного дескриптора мы будем иметь доступ к таймеру - можем его поставить на паузу, или остановить, например.
+	
+	const int32 MaxTimerCount = 5;
+	int32 TimerCount = 0;
 
 	void HandleMovement();
 
@@ -79,7 +89,7 @@ private:
 
 	void SetColor(const FLinearColor& Color);
 
-
+	void OnTimerFired();
 
 
 };
