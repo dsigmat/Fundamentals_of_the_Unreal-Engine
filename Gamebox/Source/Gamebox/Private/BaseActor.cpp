@@ -24,10 +24,11 @@ void ABaseActor::BeginPlay()
 	
 
 
-	PrintTransform();
-
+	//PrintTransform();
 	//PrintStringType();
 	//PrintTypes();
+
+	//z = z0 + amplitude * sin(freq + time)
 	
 }
 
