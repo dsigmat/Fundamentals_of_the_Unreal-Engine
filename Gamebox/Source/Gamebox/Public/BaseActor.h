@@ -15,6 +15,21 @@ enum class EMovementType : uint8
 	Static
 };
 
+USTRUCT(BlueprintType)
+struct FGeometryData
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		float Amplitude = 50.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		float Frequency = 2.0f; // частота колебаний
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		EMovementType MoveType = EMovementType::Static;
+};
+
 UCLASS()
 class GAMEBOX_API ABaseActor : public AActor
 {
@@ -42,14 +57,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 		bool HasWeapon = true;
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
-		float Amplitude = 50.0f;
-
-	UPROPERTY(EditAnywhere, Category = "Movement")
-		float Frequency = 2.0f; // частота колебаний
-
-	UPROPERTY(EditAnywhere, Category = "Movement")
-	EMovementType MoveType = EMovementType::Static;
+	UPROPERTY(EditAnywhere, Category = "Geometry Data")
+		FGeometryData GeometryData;
 
 public:
 	// Called every frame
@@ -59,9 +68,13 @@ private:
 
 	FVector InitialLocation; //кешируем первоночальное значение актора
 
+	void HandleMovement();
+
 	void PrintTypes();
 	void PrintStringType();
 	void PrintTransform();
+
+
 
 
 };

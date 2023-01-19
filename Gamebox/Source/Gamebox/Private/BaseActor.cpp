@@ -23,12 +23,9 @@ void ABaseActor::BeginPlay()
 
 	InitialLocation = GetActorLocation(); //получаем доступ к локации
 
-
 	//PrintTransform();
 	//PrintStringType();
-	//PrintTypes();
-
-	
+	//PrintTypes();	
 }
 
 // Called every frame
@@ -36,26 +33,30 @@ void ABaseActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	HandleMovement();
+
+}
+
+void ABaseActor::HandleMovement()//реализовали функцию движения по синусу
+{
 	//z = z0 + amplitude * sin(freq * time)
-	//реализовали функцию движения по синусу
-	switch (MoveType)
+	
+	switch (GeometryData.MoveType)
 	{
 	case EMovementType::Sin:
 	{
 		FVector CurrentLocation = GetActorLocation();
 		float Time = GetWorld()->GetTimeSeconds();
-		CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Frequency * Time);
+		CurrentLocation.Z = InitialLocation.Z + GeometryData.Amplitude * FMath::Sin(GeometryData.Frequency * Time);
 
 		SetActorLocation(CurrentLocation); // данная функция меняет положение в мире
 	}
-		break;
+	break;
 	case EMovementType::Static:
 		break;
 	default:
 		break;
 	}
-	
-
 }
 
 void ABaseActor::PrintTypes()
