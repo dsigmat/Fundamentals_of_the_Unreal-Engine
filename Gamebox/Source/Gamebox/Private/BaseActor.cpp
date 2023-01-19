@@ -11,7 +11,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogBaseActor, All, All)
 // Sets default values
 ABaseActor::ABaseActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>("BaseMesh");
@@ -48,16 +48,19 @@ void ABaseActor::Tick(float DeltaTime)
 void ABaseActor::HandleMovement()//реализовали функцию движения по синусу
 {
 	//z = z0 + amplitude * sin(freq * time)
-	
+
 	switch (GeometryData.MoveType)
 	{
 	case EMovementType::Sin:
 	{
 		FVector CurrentLocation = GetActorLocation();
-		float Time = GetWorld()->GetTimeSeconds();
-		CurrentLocation.Z = InitialLocation.Z + GeometryData.Amplitude * FMath::Sin(GeometryData.Frequency * Time);
+		if (GetWorld())
+		{
+			float Time = GetWorld()->GetTimeSeconds();
+			CurrentLocation.Z = InitialLocation.Z + GeometryData.Amplitude * FMath::Sin(GeometryData.Frequency * Time);
 
-		SetActorLocation(CurrentLocation); // данная функция меняет положение в мире
+			SetActorLocation(CurrentLocation); // данная функция меняет положение в мире
+		}
 	}
 	break;
 	case EMovementType::Static:
@@ -89,8 +92,11 @@ void ABaseActor::PrintStringType()
 
 	UE_LOG(LogBaseActor, Warning, TEXT("%s"), *Stat);
 
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, Name);
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, Stat, true, FVector2D(2.0f, 2.0f));
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, Name);
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, Stat, true, FVector2D(2.0f, 2.0f));
+	}	
 }
 
 void ABaseActor::PrintTransform()
@@ -112,6 +118,10 @@ void ABaseActor::PrintTransform()
 
 void ABaseActor::SetColor(const FLinearColor& Color)
 {
+	if (!BaseMesh)
+	{
+		return;
+	}
 	UMaterialInstanceDynamic* DynMaterial = BaseMesh->CreateAndSetMaterialInstanceDynamic(0);
 	if (DynMaterial)
 	{
@@ -131,6 +141,6 @@ void ABaseActor::OnTimerFired()
 	{
 		UE_LOG(LogBaseActor, Warning, TEXT("Timer has been stopped!"));
 		GetWorldTimerManager().ClearTimer(TimerHandle);
-	}	
+	}
 }
 

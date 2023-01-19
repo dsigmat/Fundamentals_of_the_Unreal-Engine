@@ -39,12 +39,6 @@ protected:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ABaseActor> GeometryClass;
 
-	/*UPROPERTY(EditAnywhere)
-		UClass* Class;
-
-	UPROPERTY(EditAnywhere)
-		ABaseActor* GeometryObject;*/
-
 	UPROPERTY(EditAnywhere)
 		TArray<FGeometryPayload> GeometryPayloads;
 
