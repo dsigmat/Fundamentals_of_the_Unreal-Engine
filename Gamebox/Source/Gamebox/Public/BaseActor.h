@@ -35,11 +35,19 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 		bool HasWeapon = true;
 
+	UPROPERTY(VisibleAnywhere, Category = "Movement")
+		float Amplitude = 50.0f;
+
+	UPROPERTY(VisibleAnywhere, Category = "Movement")
+		float Frequency = 2.0f; // частота колебаний
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 private:
+
+	FVector InitialLocation; //кешируем первоночальное значение актора
 
 	void PrintTypes();
 	void PrintStringType();

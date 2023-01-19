@@ -21,7 +21,7 @@ void ABaseActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+	InitialLocation = GetActorLocation(); //получаем доступ к локации
 
 
 	//PrintTransform();
@@ -29,7 +29,11 @@ void ABaseActor::BeginPlay()
 	//PrintTypes();
 
 	//z = z0 + amplitude * sin(freq + time)
-	
+	//реализовали функцию движения по синусу
+	FVector CurrentLocation = GetActorLocation();
+	float Time = GetWorld()->GetTimeSeconds();
+	CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Frequency + Time);
+	SetActorLocation(CurrentLocation);
 }
 
 // Called every frame
