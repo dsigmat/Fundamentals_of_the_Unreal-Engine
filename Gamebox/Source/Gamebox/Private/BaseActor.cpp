@@ -38,11 +38,23 @@ void ABaseActor::Tick(float DeltaTime)
 
 	//z = z0 + amplitude * sin(freq * time)
 	//реализовали функцию движения по синусу
-	FVector CurrentLocation = GetActorLocation();
-	float Time = GetWorld()->GetTimeSeconds();
-	CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Frequency * Time);
+	switch (MoveType)
+	{
+	case EMovementType::Sin:
+	{
+		FVector CurrentLocation = GetActorLocation();
+		float Time = GetWorld()->GetTimeSeconds();
+		CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Frequency * Time);
 
-	SetActorLocation(CurrentLocation); // данная функция меняет положение в мире
+		SetActorLocation(CurrentLocation); // данная функция меняет положение в мире
+	}
+		break;
+	case EMovementType::Static:
+		break;
+	default:
+		break;
+	}
+	
 
 }
 

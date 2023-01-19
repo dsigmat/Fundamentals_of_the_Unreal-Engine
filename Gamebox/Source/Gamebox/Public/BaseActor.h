@@ -8,6 +8,13 @@
 
 #include "BaseActor.generated.h"
 
+UENUM(BlueprintType)
+enum class EMovementType : uint8
+{
+	Sin,
+	Static
+};
+
 UCLASS()
 class GAMEBOX_API ABaseActor : public AActor
 {
@@ -40,6 +47,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		float Frequency = 2.0f; // частота колебаний
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	EMovementType MoveType = EMovementType::Static;
 
 public:
 	// Called every frame
