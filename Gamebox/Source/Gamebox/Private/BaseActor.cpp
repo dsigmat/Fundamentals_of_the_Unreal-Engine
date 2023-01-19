@@ -3,6 +3,7 @@
 
 #include "BaseActor.h"
 #include "Engine/Engine.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseActor, All, All)
 
@@ -14,6 +15,8 @@ ABaseActor::ABaseActor()
 
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>("BaseMesh");
 	SetRootComponent(BaseMesh);
+
+
 }
 
 // Called when the game starts or when spawned
@@ -23,9 +26,11 @@ void ABaseActor::BeginPlay()
 
 	InitialLocation = GetActorLocation(); //получаем доступ к локации
 
+	SetColor(GeometryData.Color);
+
 	//PrintTransform();
 	//PrintStringType();
-	//PrintTypes();	
+	//PrintTypes();		
 }
 
 // Called every frame
@@ -100,5 +105,14 @@ void ABaseActor::PrintTransform()
 
 
 	UE_LOG(LogBaseActor, Error, TEXT("Scale: %s"), *Transform.ToHumanReadableString());
+}
+
+void ABaseActor::SetColor(const FLinearColor& Color)
+{
+	UMaterialInstanceDynamic* DynMaterial = BaseMesh->CreateAndSetMaterialInstanceDynamic(0);
+	if (DynMaterial)
+	{
+		DynMaterial->SetVectorParameterValue("Color", Color);
+	}
 }
 

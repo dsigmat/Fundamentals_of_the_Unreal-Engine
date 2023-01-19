@@ -28,6 +28,9 @@ struct FGeometryData
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		EMovementType MoveType = EMovementType::Static;
+
+	UPROPERTY(EditAnywhere, Category = "Design")
+		FLinearColor Color = FLinearColor::Yellow;
 };
 
 UCLASS()
@@ -40,7 +43,7 @@ public:
 	ABaseActor();
 
 	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* BaseMesh;
+		UStaticMeshComponent* BaseMesh;
 
 protected:
 	// Called when the game starts or when spawned
@@ -73,6 +76,8 @@ private:
 	void PrintTypes();
 	void PrintStringType();
 	void PrintTransform();
+
+	void SetColor(const FLinearColor& Color);
 
 
 
