@@ -7,12 +7,28 @@
 #include "BaseActor.h"
 #include "GeometryHubActor.generated.h"
 
+USTRUCT(BlueprintType)
+struct FGeometryPayload
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<ABaseActor> GeometryClass;
+
+	UPROPERTY(EditAnywhere)
+		FGeometryData Data;
+
+	UPROPERTY(EditAnywhere)
+		FTransform InitialTransform;
+
+};
+
 UCLASS()
 class GAMEBOX_API AGeometryHubActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AGeometryHubActor();
 
@@ -23,14 +39,23 @@ protected:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ABaseActor> GeometryClass;
 
-	UPROPERTY(EditAnywhere)
+	/*UPROPERTY(EditAnywhere)
 		UClass* Class;
 
 	UPROPERTY(EditAnywhere)
-		ABaseActor* GeometryObject;
+		ABaseActor* GeometryObject;*/
 
-public:	
+	UPROPERTY(EditAnywhere)
+		TArray<FGeometryPayload> GeometryPayloads;
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
+
+	void DoActorSpawn1();
+	void DoActorSpawn2();
+	void DoActorSpawn3();
 
 };
