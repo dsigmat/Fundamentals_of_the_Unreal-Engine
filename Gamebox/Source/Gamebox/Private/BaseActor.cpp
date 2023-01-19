@@ -28,18 +28,21 @@ void ABaseActor::BeginPlay()
 	//PrintStringType();
 	//PrintTypes();
 
-	//z = z0 + amplitude * sin(freq + time)
-	//реализовали функцию движения по синусу
-	FVector CurrentLocation = GetActorLocation();
-	float Time = GetWorld()->GetTimeSeconds();
-	CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Frequency + Time);
-	SetActorLocation(CurrentLocation);
+	
 }
 
 // Called every frame
 void ABaseActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	//z = z0 + amplitude * sin(freq * time)
+	//реализовали функцию движения по синусу
+	FVector CurrentLocation = GetActorLocation();
+	float Time = GetWorld()->GetTimeSeconds();
+	CurrentLocation.Z = InitialLocation.Z + Amplitude * FMath::Sin(Frequency * Time);
+
+	SetActorLocation(CurrentLocation); // данная функция меняет положение в мире
 
 }
 

@@ -35,10 +35,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 		bool HasWeapon = true;
 
-	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, Category = "Movement")
 		float Amplitude = 50.0f;
 
-	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, Category = "Movement")
 		float Frequency = 2.0f; // частота колебаний
 
 public:
