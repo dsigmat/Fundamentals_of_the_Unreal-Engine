@@ -110,6 +110,4 @@ void AGeometryHubActor::OnTimerFinished(AActor* Actor)
 
 	Geometry->Destroy();
 	//Geometry->SetLifeSpan(2.0f);
-
-
 }

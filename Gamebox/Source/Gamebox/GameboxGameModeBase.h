@@ -14,4 +14,6 @@ class GAMEBOX_API AGameboxGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	AGameboxGameModeBase();
 };
