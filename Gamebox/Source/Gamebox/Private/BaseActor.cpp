@@ -36,6 +36,13 @@ void ABaseActor::BeginPlay()
 	//PrintTypes();		
 }
 
+void ABaseActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	UE_LOG(LogBaseActor, Error, TEXT("Actor is dead %s"), *GetName());
+}
+
 // Called every frame
 void ABaseActor::Tick(float DeltaTime)
 {
@@ -136,11 +143,13 @@ void ABaseActor::OnTimerFired()
 		FLinearColor NewColor = FLinearColor::MakeRandomColor();
 		UE_LOG(LogBaseActor, Warning, TEXT("Timer Count: %i, Color: %s"), TimerCount, *NewColor.ToString());
 		SetColor(NewColor);
+		OnColorChanged.Broadcast(NewColor, GetName());
 	}
 	else
 	{
 		UE_LOG(LogBaseActor, Warning, TEXT("Timer has been stopped!"));
 		GetWorldTimerManager().ClearTimer(TimerHandle);
+		OnTimerFinished.Broadcast(this);
 	}
 }
 

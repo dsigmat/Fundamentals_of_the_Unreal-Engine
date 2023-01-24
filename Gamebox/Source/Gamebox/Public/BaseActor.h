@@ -8,6 +8,10 @@
 
 #include "BaseActor.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnColorChanged, const FLinearColor&, Color, const FString&, Name);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnTimerFinished, AActor*);
+
+
 UENUM(BlueprintType)
 enum class EMovementType : uint8
 {
@@ -20,16 +24,16 @@ struct FGeometryData
 {
 	GENERATED_USTRUCT_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		float Amplitude = 50.0f;
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		float Frequency = 2.0f; // частота колебаний
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		EMovementType MoveType = EMovementType::Static;
 
-	UPROPERTY(EditAnywhere, Category = "Design")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Design")
 		FLinearColor Color = FLinearColor::Yellow;
 
 	UPROPERTY(EditAnywhere, Category = "Design")
@@ -51,14 +55,28 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* BaseMesh;
 
+
 	void SetGeometryData(const FGeometryData& Data)
 	{
 		GeometryData = Data;
 	}
 
+	UFUNCTION(BlueprintCallable)//Благодаря этому, мы сможем вызвать функцию GetGeometryData из блюпринт графа.
+		FGeometryData GetGeometryData() const
+	{
+		return GeometryData;
+	}
+
+	UPROPERTY(BlueprintAssignable)
+		FOnColorChanged OnColorChanged;
+
+	FOnTimerFinished OnTimerFinished;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 		int32 WeaponsNum = 4;
@@ -71,7 +89,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 		bool HasWeapon = true;
 
-	UPROPERTY(EditAnywhere, Category = "Geometry Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Geometry Data")
 		FGeometryData GeometryData;
 
 public:
@@ -82,7 +100,7 @@ private:
 
 	FVector InitialLocation; //кешируем первоночальное значение актора
 	FTimerHandle TimerHandle;//С помощью данного дескриптора мы будем иметь доступ к таймеру - можем его поставить на паузу, или остановить, например.
-	
+
 	const int32 MaxTimerCount = 5;
 	int32 TimerCount = 0;
 

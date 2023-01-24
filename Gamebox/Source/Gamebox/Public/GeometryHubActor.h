@@ -7,6 +7,8 @@
 #include "BaseActor.h"
 #include "GeometryHubActor.generated.h"
 
+
+
 USTRUCT(BlueprintType)
 struct FGeometryPayload
 {
@@ -51,5 +53,10 @@ private:
 	void DoActorSpawn1();
 	void DoActorSpawn2();
 	void DoActorSpawn3();
+
+	UFUNCTION()
+	void OnColorChaged(const FLinearColor& Color, const FString& Name);
+	
+	void OnTimerFinished(AActor* Actor);
 
 };
